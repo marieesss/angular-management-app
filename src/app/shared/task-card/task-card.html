@@ -1,72 +1,75 @@
-<div class="bg-neutral-primary-soft border border-default rounded-lg shadow-xs hover:shadow-md transition-shadow">
-    <div class="p-6 space-y-4">
-        <!-- En-tête de la card -->
-        <div class="flex justify-between items-start">
-            <h3 class="text-lg font-semibold text-heading">{{ task().title }}</h3>
-            <div class="flex justify-between items-center"> 
+<div class="task-card">
+  <div class="task-card-content">
+    <!-- En-tête de la card -->
+    <div class="task-header">
+      <h3 class="task-title" [class.task-done]="task().status === 'DONE'">
+        {{ task().title }}
+      </h3>
+      <div class="task-actions">
         @switch (task().status) {
-            @case('PENDING'){
-                <button (click)="onStart()"
-                        type="button"
-                        class="rounded-lg p-1.5 text-slate-400 transition hover:bg-amber-50 hover:text-amber-600"
-                        title="Commencer la tâche">
-                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
-                    </svg>
-                </button>
-            }
-            @case ('IN_PROGRESS') {
-                              <button type="button" (click)="onEnd()"
-                      class="rounded-lg p-1.5 text-green-500 transition hover:bg-green-50 hover:text-green-600"
-                      title="Terminé la tache">
-                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M9 12.75l2 2 4-4.5M12 3.75c-4.556 0-8.25 3.694-8.25 8.25s3.694 8.25 8.25 8.25 8.25-3.694 8.25-8.25-3.694-8.25-8.25-8.25z" />
-                </svg>
-              </button>
-            }
+          @case('PENDING') {
+            <button
+              (click)="onStart()"
+              type="button"
+              class="rounded-lg p-1.5 text-slate-400 transition hover:bg-amber-50 hover:text-amber-600"
+              title="Commencer la tâche">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z" />
+              </svg>
+            </button>
+          }
+          @case ('IN_PROGRESS') {
+            <button
+              type="button"
+              (click)="onEnd()"
+              class="rounded-lg p-1.5 text-green-500 transition hover:bg-green-50 hover:text-green-600"
+              title="Terminer la tâche">
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12.75l2 2 4-4.5M12 3.75c-4.556 0-8.25 3.694-8.25 8.25s3.694 8.25 8.25 8.25 8.25-3.694 8.25-8.25-3.694-8.25-8.25-8.25z" />
+              </svg>
+            </button>
+          }
         }
-            <span class="px-2 py-1 rounded text-xs font-medium"
-                  [class.bg-yellow-100]="task().status === 'PENDING'"
-                  [class.text-yellow-800]="task().status === 'PENDING'"
-                  [class.bg-blue-100]="task().status === 'IN_PROGRESS'"
-                  [class.text-blue-800]="task().status === 'IN_PROGRESS'"
-                  [class.bg-green-100]="task().status === 'DONE'"
-                  [class.text-green-800]="task().status === 'DONE'">
-                {{ (task().status ?? '') | taskStatus }}
-            </span>
-            </div>
-
-        </div>
-        
-        <!-- Description -->
-        <p class="text-sm text-body line-clamp-3">{{ task().description }}</p>
-        
-        <!-- Informations -->
-        <div class="space-y-2 text-sm text-body">
-            <div class="flex items-center gap-2">
-                <span class="font-medium">Créé le:</span>
-                <span>{{ task().createdAt | date: 'short' }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="font-medium">👤</span>
-                <span>{{ task().user?.username || 'Non assigné' }}</span>
-            </div>
-        </div>
-
-        <a href="/update/{{task().id}}" >
-        <button class ="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
-            <p>📝</p>
-        </button>  
-        </a>
-
-        <button (click)="onDelete()" class ="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-violet-200 hover:bg-violet-400 px-4 py-2.5 text-white shadow-sm transition-colors">
-                🗑️
-        </button>  
-
-
+        <span class="status-badge" [class]="'status-' + task().status?.toLowerCase()">
+          {{ (task().status ?? '') | taskStatus }}
+        </span>
+      </div>
     </div>
+
+    <!-- Description -->
+    <p class="task-description">{{ task().description }}</p>
+
+    <!-- Dates -->
+    <div class="task-dates">
+      <div class="date-item">
+        <span class="date-label">Créé le:</span>
+        <span class="date-value">{{ task().createdAt | frenchDate }}</span>
+      </div>
+      @if (task().updatedAt && task().updatedAt !== task().createdAt) {
+        <div class="date-item">
+          <span class="date-label">Modifié le:</span>
+          <span class="date-value">{{ task().updatedAt | frenchDate }}</span>
+        </div>
+      }
+      <div class="date-item">
+        <span class="date-label">Assigné à:</span>
+        <span class="date-value">{{ task().user?.username || 'Non assigné' }}</span>
+      </div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <a href="/update/{{task().id}}">
+      <button class="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
+        <p>📝</p>
+      </button>
+    </a>
+
+    <button (click)="onDelete()" class="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-violet-200 hover:bg-violet-400 px-4 py-2.5 text-white shadow-sm transition-colors">
+      🗑️
+    </button>
+  </div>
 </div>

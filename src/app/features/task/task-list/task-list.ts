@@ -4,10 +4,11 @@ import { TaskService } from '../services/taskService';
 import { Status, Tasks } from '../interfaces/tasks';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TaskCard } from '../../../shared/task-card/task-card';
+import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'app-task-list',
-  imports: [CommonModule, TaskCard],
+  imports: [CommonModule, TaskCard, ConfirmModalComponent],
   templateUrl: './task-list.html',
   styleUrl: './task-list.css',
 })
@@ -15,6 +16,7 @@ export class TaskList {
   private taskService = inject(TaskService);
   task = signal<Tasks[]>([]);
   private destroyRef = inject(DestroyRef);
+  taskToDelete = signal<Tasks | null>(null);
 
   ngOnInit() {
     this.taskService.getTasks().pipe(takeUntilDestroyed(this.destroyRef)).subscribe((tasks) => {
@@ -34,11 +36,22 @@ export class TaskList {
   }
 
   onDeleteTask(task: Tasks) {
-    this.taskService.deleteTask(task.id!).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-    
-      const currentTasks = this.task();
-      this.task.set(currentTasks.filter(t => t.id !== task.id));
-    });
+    this.taskToDelete.set(task);
+  }
+
+  confirmDelete() {
+    const task = this.taskToDelete();
+    if (task && task.id) {
+      this.taskService.deleteTask(task.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+        const currentTasks = this.task();
+        this.task.set(currentTasks.filter(t => t.id !== task.id));
+        this.taskToDelete.set(null);
+      });
+    }
+  }
+
+  cancelDelete() {
+    this.taskToDelete.set(null);
   }
 
 }

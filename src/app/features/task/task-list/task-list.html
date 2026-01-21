@@ -1,6 +1,16 @@
+@if (taskToDelete()) {
+  <app-confirm-modal
+    [title]="'Supprimer la tâche'"
+    [message]="'Êtes-vous sûr de vouloir supprimer la tâche &quot;' + taskToDelete()?.title + '&quot; ? Cette action est irréversible.'"
+    [confirmText]="'Supprimer'"
+    [cancelText]="'Annuler'"
+    (confirm)="confirmDelete()"
+    (cancel)="cancelDelete()">
+  </app-confirm-modal>
+}
 
 <div class="px-6 lg:px-12 py-8">
-    
+
     <div class="mb-8 flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-heading">Liste des tâches</h1>
@@ -12,7 +22,7 @@
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @for (t of task(); track t.id) {
-            <app-task-card [task]="t" (startTaskEdit)="onStartTaskEdit($event)" (deleteTask)="onDeleteTask($event)" />
+            <app-task-card [task]="t" (startTaskEdit)="onStartTaskEdit($event)" (deleteTask)="onDeleteTask($event)"></app-task-card>
         } @empty {
             <div class="col-span-full flex items-center justify-center py-12">
                 <p class="text-body text-center">Aucune tâche disponible.</p>
