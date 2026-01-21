@@ -63,21 +63,17 @@
         </div>
 
         <div class="flex justify-center mt-4 p-2 gap-4">
-        <a href="/update/{{task().id}}" >
-        <button class ="mt-4  inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
+        <button routerLink="/update/{{task().id}}" class ="mt-4 inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
             <p>📝</p>
         </button>
-        </a>
 
         <button (click)="onDelete()" class ="mt-4  inline-flex items-center justify-center rounded-lg bg-violet-200 hover:bg-violet-400 px-4 py-2.5 text-white shadow-sm transition-colors">
                 🗑️
         </button>
 
-        <a href="/detail/{{task().id}}" >
-        <button class ="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
+        <button  routerLink="/detail/{{task().id}}" class="mt-4 inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
             <p>👁️</p>
         </button>
-        </a>
         </div>
 
 

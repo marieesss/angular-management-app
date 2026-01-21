@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { Status, Tasks } from '../../features/task/interfaces/tasks';
 import { TaskStatusPipe } from '../../features/task/pipe/task-status-pipe';
 import { FrenchDatePipe } from '../../features/task/pipe/french-date.pipe';
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-task-card',
-  imports: [CommonModule, TaskStatusPipe, FrenchDatePipe],
+  imports: [CommonModule, TaskStatusPipe, FrenchDatePipe, RouterLink],
   templateUrl: './task-card.html',
   styleUrl: './task-card.css',
 })
 export class TaskCard {
   task = input.required<Tasks>();
-  
+
   editTask = output<Tasks>();
   startTaskEdit = output<Tasks>();
   deleteTask = output<Tasks>();
