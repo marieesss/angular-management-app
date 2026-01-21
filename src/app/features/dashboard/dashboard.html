@@ -1,0 +1,38 @@
+<section class="page">
+  <h1 class="title">Dashboard</h1>
+
+  <div class="kpi-grid">
+    <article class="kpi">
+      <p class="kpi-label">Total tâches</p>
+      <p class="kpi-value">{{ totalTasks() }}</p>
+    </article>
+
+    <article class="kpi">
+      <p class="kpi-label">Terminées (DONE)</p>
+      <p class="kpi-value">{{ doneTasks() }}</p>
+    </article>
+
+    <article class="kpi">
+      <p class="kpi-label">Mes tâches</p>
+      <p class="kpi-value">{{ myTasks() }}</p>
+    </article>
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-head">
+      <p class="progress-title">Progression</p>
+      <p class="progress-value">{{ completionPercent() }}%</p>
+    </div>
+
+    <div class="progress-bar" role="progressbar"
+         [attr.aria-valuenow]="completionPercent()"
+         aria-valuemin="0"
+         aria-valuemax="100">
+      <div class="progress-fill" [style.width.%]="completionPercent()"></div>
+    </div>
+
+    @if (totalTasks() === 0) {
+      <p class="hint">Aucune tâche pour le moment.</p>
+    }
+  </div>
+</section>
