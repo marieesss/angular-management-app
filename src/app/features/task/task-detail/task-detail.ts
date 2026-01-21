@@ -8,10 +8,11 @@ import { FrenchDatePipe } from '../pipe/french-date.pipe';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../../core/auth/services/toast.service';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
+import { Comments } from '../../comment/comments/comments';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [TaskStatusPipe, FrenchDatePipe, CommonModule, RouterLink, ToastComponent],
+  imports: [TaskStatusPipe, FrenchDatePipe, CommonModule, RouterLink, ToastComponent, Comments],
   templateUrl: './task-detail.html',
   styleUrl: './task-detail.css',
 })

@@ -60,13 +60,14 @@
                </div>
                @if (task()?.targetUserId) {
                    <div class="bg-neutral-secondary-soft p-4 rounded-lg">
-                       <h3 class="text-sm font-medium text-body mb-2">ID utilisateur cible</h3>
+                       <h3 class="text-sm font-medium text-body mb-2">ID utilisateur</h3>
                        <p class="text-heading font-semibold">
                            {{ task()?.targetUserId }}
                        </p>
                    </div>
                }
            </div>
+               <app-comments [id]="task()?.id"></app-comments>
 
        
     } @else {
