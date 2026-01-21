@@ -5,15 +5,18 @@ import { Status, Tasks } from '../interfaces/tasks';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TaskCard } from '../../../shared/task-card/task-card';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
+import { ToastService } from '../../../core/auth/services/toast.service';
+import { ToastComponent } from '../../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-task-list',
-  imports: [CommonModule, TaskCard, ConfirmModalComponent],
+  imports: [CommonModule, TaskCard, ConfirmModalComponent, ToastComponent],
   templateUrl: './task-list.html',
   styleUrl: './task-list.css',
 })
 export class TaskList {
   private taskService = inject(TaskService);
+  private toastService = inject(ToastService);
   task = signal<Tasks[]>([]);
   private destroyRef = inject(DestroyRef);
   taskToDelete = signal<Tasks | null>(null);
@@ -42,10 +45,16 @@ export class TaskList {
   confirmDelete() {
     const task = this.taskToDelete();
     if (task && task.id) {
-      this.taskService.deleteTask(task.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-        const currentTasks = this.task();
-        this.task.set(currentTasks.filter(t => t.id !== task.id));
-        this.taskToDelete.set(null);
+      this.taskService.deleteTask(task.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: () => {
+          const currentTasks = this.task();
+          this.task.set(currentTasks.filter(t => t.id !== task.id));
+          this.taskToDelete.set(null);
+          this.toastService.show('Tâche supprimée avec succès !', 'success');
+        },
+        error: () => {
+          this.toastService.show('Erreur lors de la suppression de la tâche', 'error');
+        }
       });
     }
   }

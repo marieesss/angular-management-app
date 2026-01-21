@@ -54,7 +54,7 @@
         <div class="space-y-2 text-sm text-body">
             <div class="flex items-center gap-2">
                 <span class="font-medium">Créé le:</span>
-                <span>{{ task().createdAt | date: 'short' }}</span>
+                <span>{{ task().createdAt | frenchDate }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-medium">👤</span>
@@ -75,7 +75,7 @@
 
         <a href="/detail/{{task().id}}" >
         <button class ="mt-4 w-full inline-flex items-center justify-center rounded-lg bg-amber-200 hover:bg-amber-400 px-4 py-2.5 text-white shadow-sm transition-colors">
-            <p>➕</p>
+            <p>👁️</p>
         </button>
         </a>
         </div>
