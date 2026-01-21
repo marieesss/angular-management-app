@@ -1,9 +1,12 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal, computed } from '@angular/core'; // Ajout de computed
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../services/taskService';
 import { Status, Tasks } from '../interfaces/tasks';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TaskCard } from '../../../shared/task-card/task-card';
+
+// Type pour le filtre
+type FilterType = 'ALL' | 'TODO' | 'DONE';
 
 @Component({
   selector: 'app-task-list',
@@ -13,13 +16,40 @@ import { TaskCard } from '../../../shared/task-card/task-card';
 })
 export class TaskList {
   private taskService = inject(TaskService);
-  task = signal<Tasks[]>([]);
   private destroyRef = inject(DestroyRef);
+
+  // Source de vérité (toutes les tâches)
+  task = signal<Tasks[]>([]);
+  
+  // État du filtre actuel
+  filter = signal<FilterType>('ALL');
+
+  // Signal calculé : se met à jour automatiquement si 'task' ou 'filter' change
+  filteredTasks = computed(() => {
+    const tasks = this.task();
+    const currentFilter = this.filter();
+
+    switch (currentFilter) {
+      case 'DONE':
+        return tasks.filter(t => t.status === Status.DONE);
+      case 'TODO':
+        // On considère "À faire" comme PENDING ou IN_PROGRESS
+        return tasks.filter(t => t.status === Status.PENDING || t.status === Status.IN_PROGRESS);
+      case 'ALL':
+      default:
+        return tasks;
+    }
+  });
 
   ngOnInit() {
     this.taskService.getTasks().pipe(takeUntilDestroyed(this.destroyRef)).subscribe((tasks) => {
       this.task.set(tasks);
     });
+  }
+
+  // Méthode pour changer le filtre via l'UI
+  setFilter(newFilter: FilterType) {
+    this.filter.set(newFilter);
   }
 
   onStartTaskEdit(task: Tasks) {
@@ -28,17 +58,15 @@ export class TaskList {
       const index = currentTasks.findIndex(t => t.id === updatedTask.id);
       if (index !== -1) {
         currentTasks[index] = updatedTask;
-        this.task.set([...currentTasks]);
+        this.task.set([...currentTasks]); // Cela déclenchera aussi la mise à jour de filteredTasks
       }
     });
   }
 
   onDeleteTask(task: Tasks) {
     this.taskService.deleteTask(task.id!).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-    
       const currentTasks = this.task();
       this.task.set(currentTasks.filter(t => t.id !== task.id));
     });
   }
-
 }

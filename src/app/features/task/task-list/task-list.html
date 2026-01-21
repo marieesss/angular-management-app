@@ -1,23 +1,62 @@
 
 <div class="px-6 lg:px-12 py-8">
     
-    <div class="mb-8 flex justify-between items-center">
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
             <h1 class="text-2xl font-bold text-heading">Liste des tâches</h1>
             <p class="text-body text-sm mt-2">Gérez et consultez toutes les tâches ici.</p>
         </div>
-        <a href="/create" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 rounded-lg text-white">
-            Créer une tâche
-        </a>
+
+        <div class="flex flex-col sm:flex-row gap-4 items-center">
+            
+            <div class="inline-flex bg-gray-100 p-1 rounded-lg">
+                <button 
+                    (click)="setFilter('ALL')"
+                    class="px-4 py-2 text-sm font-medium rounded-md transition-colors"
+                    [class.bg-white]="filter() === 'ALL'"
+                    [class.text-amber-600]="filter() === 'ALL'"
+                    [class.shadow-sm]="filter() === 'ALL'"
+                    [class.text-gray-500]="filter() !== 'ALL'">
+                    Toutes
+                </button>
+                <button 
+                    (click)="setFilter('TODO')"
+                    class="px-4 py-2 text-sm font-medium rounded-md transition-colors"
+                    [class.bg-white]="filter() === 'TODO'"
+                    [class.text-amber-600]="filter() === 'TODO'"
+                    [class.shadow-sm]="filter() === 'TODO'"
+                    [class.text-gray-500]="filter() !== 'TODO'">
+                    À faire
+                </button>
+                <button 
+                    (click)="setFilter('DONE')"
+                    class="px-4 py-2 text-sm font-medium rounded-md transition-colors"
+                    [class.bg-white]="filter() === 'DONE'"
+                    [class.text-amber-600]="filter() === 'DONE'"
+                    [class.shadow-sm]="filter() === 'DONE'"
+                    [class.text-gray-500]="filter() !== 'DONE'">
+                    Terminées
+                </button>
+            </div>
+
+            <a href="/create" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 rounded-lg text-white hover:bg-amber-600 transition-colors">
+                Créer une tâche
+            </a>
+        </div>
     </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (t of task(); track t.id) {
+        @for (t of filteredTasks(); track t.id) {
             <app-task-card [task]="t" (startTaskEdit)="onStartTaskEdit($event)" (deleteTask)="onDeleteTask($event)" />
         } @empty {
-            <div class="col-span-full flex items-center justify-center py-12">
-                <p class="text-body text-center">Aucune tâche disponible.</p>
+            <div class="col-span-full flex flex-col items-center justify-center py-12 text-gray-400">
+                <p class="text-lg font-medium">Aucune tâche trouvée.</p>
+                <p class="text-sm">
+                    @if(filter() === 'TODO') { Vous êtes à jour ! }
+                    @else if(filter() === 'DONE') { Aucune tâche terminée pour le moment. }
+                    @else { Commencez par en créer une nouvelle. }
+                </p>
             </div>
         }
     </div>
 </div>
-
