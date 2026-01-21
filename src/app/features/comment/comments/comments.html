@@ -1,0 +1,38 @@
+
+<form [formGroup]="commentForm" (ngSubmit)="onSubmit()" class="w-full justify-between pt-8">   
+    <div class="mb-4">
+        <label for="comment" class="block text-sm font-medium text-body mb-1">Ajouter un commentaire</label>
+        <textarea
+            id="comment"
+            formControlName="comment"
+            rows="3"
+            class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+            placeholder="Écrivez votre commentaire ici..."
+            required
+        ></textarea>
+    </div>
+    <div class="flex justify-end">
+        <button
+            type="submit"
+            class="inline-flex items-center justify-center rounded-lg bg-amber-500 hover:bg-amber-600 px-4 py-2.5 text-white shadow-sm transition-colors"
+            [disabled]="commentForm.invalid"
+        >
+            Publier le commentaire
+        </button>
+    </div>
+</form>
+
+<div class="mt-8 space-y-6">
+    @for (comment of comments(); track comment.id) {
+        <div class="p-4 bg-neutral-secondary-soft rounded-lg">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-heading">{{ comment.authorName }}</h3>
+                <span class="text-xs text-body">{{ comment.createdAt | date: 'short' }}</span>
+            </div>
+            <p class="text-body text-sm">{{ comment.content }}</p>
+        </div>
+    } @empty {
+        <div class="text-center text-body text-sm">Aucun commentaire disponible.</div>
+    }
+</div>
+

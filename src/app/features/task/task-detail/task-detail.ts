@@ -5,10 +5,11 @@ import { Tasks } from '../interfaces/tasks';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TaskStatusPipe } from '../pipe/task-status-pipe';
 import { CommonModule } from '@angular/common';
+import { Comments } from '../../comment/comments/comments';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [TaskStatusPipe, CommonModule, RouterLink],
+  imports: [TaskStatusPipe, CommonModule, RouterLink, Comments],
   templateUrl: './task-detail.html',
   styleUrl: './task-detail.css',
 })
