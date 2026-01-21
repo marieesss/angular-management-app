@@ -1,0 +1,23 @@
+
+<div class="px-6 lg:px-12 py-8">
+    
+    <div class="mb-8 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold text-heading">Liste des tâches</h1>
+            <p class="text-body text-sm mt-2">Gérez et consultez toutes les tâches ici.</p>
+        </div>
+        <a href="/create" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-500 rounded-lg text-white">
+            Créer une tâche
+        </a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (t of task(); track t.id) {
+            <app-task-card [task]="t" (startTaskEdit)="onStartTaskEdit($event)" (deleteTask)="onDeleteTask($event)" />
+        } @empty {
+            <div class="col-span-full flex items-center justify-center py-12">
+                <p class="text-body text-center">Aucune tâche disponible.</p>
+            </div>
+        }
+    </div>
+</div>
+
