@@ -1,0 +1,79 @@
+.page {
+  padding: 16px;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-size: 22px;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.kpi {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 14px;
+  background: white;
+}
+
+.kpi-label {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.kpi-value {
+  margin: 6px 0 0 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.progress-card {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 14px;
+  background: white;
+}
+
+.progress-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+
+.progress-title {
+  margin: 0;
+  font-weight: 600;
+}
+
+.progress-value {
+  margin: 0;
+  font-weight: 700;
+}
+
+.progress-bar {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(0,0,0,0.08);
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.55);
+  transition: width 200ms ease;
+}
+
+.hint {
+  margin: 10px 0 0 0;
+  opacity: 0.7;
+  font-size: 13px;
+}
