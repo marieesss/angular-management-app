@@ -1,3 +1,4 @@
+<app-toast />
 <div class="px-6 lg:px-12 py-8 max-w-4xl mx-auto">
 <button routerLink="/tasks" class="mb-6 inline-flex items-center gap-2 text-fg-brand hover:underline">
     ← Retour à la liste des tâches
@@ -36,13 +37,13 @@
                <div class="bg-neutral-secondary-soft p-4 rounded-lg">
                    <h3 class="text-sm font-medium text-body mb-2">Créé le</h3>
                    <p class="text-heading font-semibold">
-                       {{ task()?.createdAt | date: 'medium' }}
+                       {{ task()?.createdAt | frenchDate }}
                    </p>
                </div>
                <div class="bg-neutral-secondary-soft p-4 rounded-lg">
                    <h3 class="text-sm font-medium text-body mb-2">Dernière modification</h3>
                    <p class="text-heading font-semibold">
-                       {{ task()?.updatedAt | date: 'medium' }}
+                       {{ task()?.updatedAt | frenchDate }}
                    </p>
                </div>
                <div class="bg-neutral-secondary-soft p-4 rounded-lg">

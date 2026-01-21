@@ -1,3 +1,4 @@
+<app-toast />
 <div class="min-h-[40vh] grid place-items-start sm:place-items-center bg-white p-4 sm:p-8">
   <form [formGroup]="tasksForm" (ngSubmit)="onSubmit()" class="w-full max-w-2xl space-y-6 bg-blue-50 backdrop-blur border border-slate-200 rounded-2xl shadow-sm p-6 sm:p-8">
     <div class="space-y-1">
@@ -22,6 +23,12 @@
         class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
         required
       />
+      @if (tasksForm.controls.title.touched && tasksForm.controls.title.hasError('required')) {
+        <p class="mt-1 text-sm text-red-600">Le titre est requis.</p>
+      }
+      @if (tasksForm.controls.title.touched && tasksForm.controls.title.hasError('minlength')) {
+        <p class="mt-1 text-sm text-red-600">Le titre doit contenir au moins 1 caractère.</p>
+      }
     </div>
 
     <!-- Description -->
@@ -33,6 +40,9 @@
         placeholder="Décrivez la tâche, les objectifs, les contraintes, etc."
         class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 placeholder-slate-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
       ></textarea>
+      @if (tasksForm.controls.description.touched && tasksForm.controls.description.hasError('required')) {
+        <p class="mt-1 text-sm text-red-600">La description est requise.</p>
+      }
     </div>
 
     <!-- Assigner à l'utilisateur -->
