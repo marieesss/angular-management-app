@@ -1,0 +1,8 @@
+@if (toastService.toast(); as toast) {
+  <div class="toast-container">
+    <div class="toast" [class]="'toast-' + toast.type">
+      <span class="toast-message">{{ toast.message }}</span>
+      <button class="toast-close" (click)="toastService.hide()">×</button>
+    </div>
+  </div>
+}

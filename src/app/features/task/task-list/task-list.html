@@ -1,7 +1,19 @@
+<app-toast />
+
+@if (taskToDelete()) {
+  <app-confirm-modal
+    [title]="'Supprimer la tâche'"
+    [message]="'Êtes-vous sûr de vouloir supprimer la tâche &quot;' + taskToDelete()?.title + '&quot; ? Cette action est irréversible.'"
+    [confirmText]="'Supprimer'"
+    [cancelText]="'Annuler'"
+    (confirm)="confirmDelete()"
+    (cancel)="cancelDelete()">
+  </app-confirm-modal>
+}
 
 <div class="px-6 lg:px-12 py-8">
-    
-    <div class="mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+
+    <div class="mb-8 flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-heading">Liste des tâches</h1>
             <p class="text-body text-sm mt-2">Gérez et consultez toutes les tâches ici.</p>
