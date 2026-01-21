@@ -54,7 +54,7 @@
         <div class="space-y-2 text-sm text-body">
             <div class="flex items-center gap-2">
                 <span class="font-medium">Créé le:</span>
-                <span>{{ task().createdAt | frenchDate }}</span>
+                <span>{{ task().createdAt | date:'short' }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <span class="font-medium">👤</span>

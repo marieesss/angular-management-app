@@ -4,14 +4,13 @@ import { TaskService } from '../services/taskService';
 import { Tasks } from '../interfaces/tasks';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TaskStatusPipe } from '../pipe/task-status-pipe';
-import { FrenchDatePipe } from '../pipe/french-date.pipe';
 import { CommonModule } from '@angular/common';
 import { ToastService } from '../../../core/auth/services/toast.service';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-task-detail',
-  imports: [TaskStatusPipe, FrenchDatePipe, CommonModule, RouterLink, ToastComponent],
+  imports: [TaskStatusPipe, CommonModule, RouterLink, ToastComponent],
   templateUrl: './task-detail.html',
   styleUrl: './task-detail.css',
 })
