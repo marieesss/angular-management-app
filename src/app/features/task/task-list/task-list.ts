@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal, computed } from '@angular/core'; // Ajout de computed
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../services/taskService';
 import { Status, Tasks } from '../interfaces/tasks';
@@ -7,6 +7,9 @@ import { TaskCard } from '../../../shared/task-card/task-card';
 import { ConfirmModalComponent } from '../../../shared/components/confirm-modal/confirm-modal.component';
 import { ToastService } from '../../../core/auth/services/toast.service';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
+
+// Type pour le filtre
+type FilterType = 'ALL' | 'TODO' | 'DONE';
 
 @Component({
   selector: 'app-task-list',
@@ -20,11 +23,36 @@ export class TaskList {
   task = signal<Tasks[]>([]);
   private destroyRef = inject(DestroyRef);
   taskToDelete = signal<Tasks | null>(null);
+  
+  // État du filtre actuel
+  filter = signal<FilterType>('ALL');
+
+  // Signal calculé : se met à jour automatiquement si 'task' ou 'filter' change
+  filteredTasks = computed(() => {
+    const tasks = this.task();
+    const currentFilter = this.filter();
+
+    switch (currentFilter) {
+      case 'DONE':
+        return tasks.filter(t => t.status === Status.DONE);
+      case 'TODO':
+        // On considère "À faire" comme PENDING ou IN_PROGRESS
+        return tasks.filter(t => t.status === Status.PENDING || t.status === Status.IN_PROGRESS);
+      case 'ALL':
+      default:
+        return tasks;
+    }
+  });
 
   ngOnInit() {
     this.taskService.getTasks().pipe(takeUntilDestroyed(this.destroyRef)).subscribe((tasks) => {
       this.task.set(tasks);
     });
+  }
+
+  // Méthode pour changer le filtre via l'UI
+  setFilter(newFilter: FilterType) {
+    this.filter.set(newFilter);
   }
 
   onStartTaskEdit(task: Tasks) {
@@ -33,7 +61,7 @@ export class TaskList {
       const index = currentTasks.findIndex(t => t.id === updatedTask.id);
       if (index !== -1) {
         currentTasks[index] = updatedTask;
-        this.task.set([...currentTasks]);
+        this.task.set([...currentTasks]); // Cela déclenchera aussi la mise à jour de filteredTasks
       }
     });
   }
@@ -62,5 +90,4 @@ export class TaskList {
   cancelDelete() {
     this.taskToDelete.set(null);
   }
-
 }
