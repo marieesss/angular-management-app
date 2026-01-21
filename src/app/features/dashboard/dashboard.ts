@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 
 import { TaskService } from '../task/services/taskService';
 import type { Tasks } from '../task/interfaces/tasks';
+import { Status } from '../task/interfaces/tasks';
 import { AuthService } from '../../core/auth/services/auth-service';
 
 @Component({
@@ -19,19 +20,16 @@ export class Dashboard {
 
   readonly tasks = toSignal(this.taskService.getTasks(), { initialValue: [] as Tasks[] });
 
-  readonly myUserId = computed(() => this.authService.currentUser()?.id ?? null);
+  readonly isAdmin = computed(() => this.authService.currentUser()?.role === 'ADMIN');
+
+  // Libellé dynamique (admin => global, user => mes tâches)
+  readonly scopeLabel = computed(() => (this.isAdmin() ? 'Global (tous les utilisateurs)' : 'Mes tâches'));
 
   readonly totalTasks = computed(() => this.tasks().length);
 
   readonly doneTasks = computed(() =>
-    this.tasks().filter(t => t.status === 'DONE').length
+    this.tasks().filter(t => t.status === Status.DONE).length
   );
-
-  readonly myTasks = computed(() => {
-    const myId = this.myUserId();
-    if (myId === null) return 0;
-    return this.tasks().filter(t => t.user?.id === myId).length;
-  });
 
   readonly completionPercent = computed(() => {
     const total = this.totalTasks();

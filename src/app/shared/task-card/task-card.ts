@@ -2,10 +2,11 @@ import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Status, Tasks } from '../../features/task/interfaces/tasks';
 import { TaskStatusPipe } from '../../features/task/pipe/task-status-pipe';
+import { FrenchDatePipe } from '../../features/task/pipe/french-date.pipe';
 
 @Component({
   selector: 'app-task-card',
-  imports: [CommonModule, TaskStatusPipe],
+  imports: [CommonModule, TaskStatusPipe, FrenchDatePipe],
   templateUrl: './task-card.html',
   styleUrl: './task-card.css',
 })
